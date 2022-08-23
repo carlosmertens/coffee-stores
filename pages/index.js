@@ -4,6 +4,9 @@ import styles from '../styles/Home.module.css';
 import { Banner } from '../components/Banner';
 import Card from '../components/Card';
 
+// rafce to create arrow function
+// clo to create consolo.log()
+
 export default function Home() {
   const handleOnBannerBtnClick = () => {
     console.log('Banner button has been clicked!');
