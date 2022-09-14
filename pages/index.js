@@ -3,11 +3,28 @@ import Image from 'next/image';
 import styles from '../styles/Home.module.css';
 import { Banner } from '../components/Banner';
 import Card from '../components/Card';
+import coffeeStoresData from '../data/coffee-stores.json';
 
-// rafce to create arrow function
-// clo to create consolo.log()
+export async function getStaticProps(context) {
+  const options = {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      Authorization: 'fsq3/V+TbzGtjZjrQSY2LCFdtbMVFK/rzlc2q/TI6626Fzg=',
+    },
+  };
+  const response = await fetch(
+    'https://api.foursquare.com/v3/places/search?query=coffee&ll=52.526239%2C13.407344',
+    options
+  );
+  const data = await response.json();
 
-export default function Home() {
+  return {
+    props: { coffeeStores: data.results },
+  };
+}
+
+export default function Home(props) {
   const handleOnBannerBtnClick = () => {
     console.log('Banner button has been clicked!');
   };
@@ -32,45 +49,34 @@ export default function Home() {
             alt='Hero image'
           />
         </div>
-        <div className={styles.cardLayout}>
-          <Card
-            name='DarkHorse Coffe'
-            imgUrl='/static/hero-image.png'
-            href='/coffee-store/darkhorse-coffe'
-            className={styles.card}
-          />
-          <Card
-            name='DarkHorse Coffe'
-            imgUrl='/static/hero-image.png'
-            href='/coffee-store/darkhorse-coffe'
-            className={styles.card}
-          />
-          <Card
-            name='DarkHorse Coffe'
-            imgUrl='/static/hero-image.png'
-            href='/coffee-store/darkhorse-coffe'
-            className={styles.card}
-          />
-          <Card
-            name='DarkHorse Coffe'
-            imgUrl='/static/hero-image.png'
-            href='/coffee-store/darkhorse-coffe'
-            className={styles.card}
-          />
-          <Card
-            name='DarkHorse Coffe'
-            imgUrl='/static/hero-image.png'
-            href='/coffee-store/darkhorse-coffe'
-            className={styles.card}
-          />
-          <Card
-            name='DarkHorse Coffe'
-            imgUrl='/static/hero-image.png'
-            href='/coffee-store/darkhorse-coffe'
-            className={styles.card}
-          />
-        </div>
+        {props.coffeeStores.length > 0 && (
+          <>
+            <h2 className={styles.heading2}>Berlin - Mitte</h2>
+            <div className={styles.cardLayout}>
+              {props.coffeeStores.map((coffeStore) => {
+                return (
+                  <Card
+                    key={coffeStore.fsq_id}
+                    name={coffeStore.name}
+                    imgUrl={
+                      coffeStore.imgUrl ||
+                      'https://images.unsplash.com/photo-1504753793650-d4a2b783c15e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80'
+                    }
+                    href={`/coffee-store/${coffeStore.fsq_id}`}
+                    className={styles.card}
+                  />
+                );
+              })}
+            </div>
+          </>
+        )}
       </main>
     </div>
   );
 }
+
+// rafce to create arrow function
+// clo to create consolo.log()
+
+// API key from Foursquare:
+// fsq3/V+TbzGtjZjrQSY2LCFdtbMVFK/rzlc2q/TI6626Fzg=
