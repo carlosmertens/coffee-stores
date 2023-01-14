@@ -1,7 +1,12 @@
-import style from '../styles/Home.module.css';
+import styles from '../styles/home.module.css';
 import Head from 'next/head';
+import { Banner } from '../components/Banner';
 
-export default function Home() {
+export default function home() {
+  const handleOnClick = () => {
+    console.log('I have been clicked!');
+  };
+
   return (
     <>
       <Head>
@@ -13,10 +18,9 @@ export default function Home() {
         <meta name='viewport' content='width=device-width, initial-scale=1' />
         <link rel='icon' href='/favicon.ico' />
       </Head>
-      <>
-        <h1>Coffee Store Collection</h1>
-        <p>Discover your local coffee stores!</p>
-      </>
+      <section className={styles.section}>
+        <Banner buttonText='View stores nearby' handleOnClick={handleOnClick} />
+      </section>
     </>
   );
 }
