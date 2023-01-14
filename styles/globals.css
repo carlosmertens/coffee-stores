@@ -6,13 +6,17 @@
 
 html,
 body {
+  min-height: 100vh;
   max-width: 100vw;
   overflow-x: hidden;
 }
 
 body {
-  color: black;
-  background: whitesmoke;
+  background: url('/static/mesh-gradient.png');
+  background-position: 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* height: 100%; */
 }
 
 a {
