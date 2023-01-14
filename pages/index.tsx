@@ -1,5 +1,6 @@
 import styles from '../styles/home.module.css';
 import Head from 'next/head';
+import Link from 'next/link';
 import { Banner } from '../components/Banner';
 
 export default function home() {
@@ -21,6 +22,9 @@ export default function home() {
       <section className={styles.section}>
         <Banner buttonText='View stores nearby' handleOnClick={handleOnClick} />
       </section>
+      <div>
+        <Link href='/coffee-store/5elph464'>Five Elefants</Link>
+      </div>
     </>
   );
 }
