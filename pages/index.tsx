@@ -3,6 +3,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import { Banner } from '../components/Banner';
 import { Card } from '../components/Card';
+import coffeeStores from '../data/coffee-stores.json';
 
 export default function home() {
   const handleOnClick = () => {
@@ -29,31 +30,16 @@ export default function home() {
           />
         </div>
         <div className={styles.cardLayout}>
-          <Card
-            href='/coffee-store/berlin-cafe'
-            name='Berlin Cafe'
-            imgUrl='/static/hero-image.png'
-          />
-          <Card
-            href='/coffee-store/berlin-cafe'
-            name='Berlin Cafe'
-            imgUrl='/static/hero-image.png'
-          />
-          <Card
-            href='/coffee-store/berlin-cafe'
-            name='Berlin Cafe'
-            imgUrl='/static/hero-image.png'
-          />
-          <Card
-            href='/coffee-store/berlin-cafe'
-            name='Berlin Cafe'
-            imgUrl='/static/hero-image.png'
-          />
-          <Card
-            href='/coffee-store/berlin-cafe'
-            name='Berlin Cafe'
-            imgUrl='/static/hero-image.png'
-          />
+          {coffeeStores.map((store) => {
+            return (
+              <Card
+                key={store.id}
+                href={`/coffee-store/${store.id}`}
+                name={store.name}
+                imgUrl={store.imgUrl}
+              />
+            );
+          })}
         </div>
       </section>
     </>
