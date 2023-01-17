@@ -4,7 +4,7 @@
   margin-bottom: 14rem;
 } */
 
-.section {
+.sectionBanner {
   margin: 2.5rem auto 14rem auto;
   /* margin-top: 2.5rem;
   margin-left: auto;
@@ -28,9 +28,9 @@
   row-gap: 1.5rem /* 24px */;
 }
 
-.card {
+/* .card {
   justify-content: center;
-}
+} */
 
 .heading2 {
   font-size: 2.25rem;

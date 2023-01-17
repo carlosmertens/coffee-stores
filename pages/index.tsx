@@ -18,7 +18,7 @@ export default function home() {
           content='Search for coffee stores in Berlin or your nearby location'
         />
       </Head>
-      <section className={styles.section}>
+      <section className={styles.sectionBanner}>
         <Banner buttonText='View stores nearby' handleOnClick={handleOnClick} />
         <div className={styles.heroImage}>
           <Image
@@ -28,14 +28,34 @@ export default function home() {
             height={400}
           />
         </div>
+        <div className={styles.cardLayout}>
+          <Card
+            href='/coffee-store/berlin-cafe'
+            name='Berlin Cafe'
+            imgUrl='/static/hero-image.png'
+          />
+          <Card
+            href='/coffee-store/berlin-cafe'
+            name='Berlin Cafe'
+            imgUrl='/static/hero-image.png'
+          />
+          <Card
+            href='/coffee-store/berlin-cafe'
+            name='Berlin Cafe'
+            imgUrl='/static/hero-image.png'
+          />
+          <Card
+            href='/coffee-store/berlin-cafe'
+            name='Berlin Cafe'
+            imgUrl='/static/hero-image.png'
+          />
+          <Card
+            href='/coffee-store/berlin-cafe'
+            name='Berlin Cafe'
+            imgUrl='/static/hero-image.png'
+          />
+        </div>
       </section>
-      <div>
-        <Card
-          href='/coffee-store/berlin-cafe'
-          name='Berlin Cafe'
-          imgUrl='/static/hero-image.png'
-        />
-      </div>
     </>
   );
 }
