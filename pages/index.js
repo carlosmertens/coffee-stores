@@ -3,9 +3,9 @@ import Head from 'next/head';
 import Image from 'next/image';
 import { Banner } from '../components/Banner';
 import { Card } from '../components/Card';
-import coffeeStores from '../data/coffee-stores.json';
+import coffeeStoresData from '../data/coffee-stores.json';
 
-export default function home() {
+export default function home({ coffeeStores }) {
   const handleOnClick = () => {
     console.log('I have been clicked!');
   };
@@ -29,19 +29,32 @@ export default function home() {
             height={400}
           />
         </div>
-        <div className={styles.cardLayout}>
-          {coffeeStores.map((store) => {
-            return (
-              <Card
-                key={store.id}
-                href={`/coffee-store/${store.id}`}
-                name={store.name}
-                imgUrl={store.imgUrl}
-              />
-            );
-          })}
-        </div>
+        {coffeeStores.length > 0 ? (
+          <>
+            <h2 className={styles.heading2}>Berlin stores</h2>
+            <div className={styles.cardLayout}>
+              {coffeeStores.map((store) => {
+                return (
+                  <Card
+                    key={store.id}
+                    href={`/coffee-store/${store.id}`}
+                    name={store.name}
+                    imgUrl={store.imgUrl}
+                  />
+                );
+              })}
+            </div>
+          </>
+        ) : null}
       </section>
     </>
   );
+}
+
+export async function getStaticProps() {
+  return {
+    props: {
+      coffeeStores: coffeeStoresData,
+    },
+  };
 }
