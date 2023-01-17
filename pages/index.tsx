@@ -1,8 +1,8 @@
 import styles from '../styles/home.module.css';
 import Head from 'next/head';
-import Link from 'next/link';
-import { Banner } from '../components/Banner';
 import Image from 'next/image';
+import { Banner } from '../components/Banner';
+import { Card } from '../components/Card';
 
 export default function home() {
   const handleOnClick = () => {
@@ -30,7 +30,11 @@ export default function home() {
         </div>
       </section>
       <div>
-        <Link href='/coffee-store/5elph464'>Five Elefants</Link>
+        <Card
+          href='/coffee-store/berlin-cafe'
+          name='Berlin Cafe'
+          imgUrl='/static/hero-image.png'
+        />
       </div>
     </>
   );

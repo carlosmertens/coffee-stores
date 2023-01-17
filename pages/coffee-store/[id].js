@@ -13,7 +13,7 @@ export default function CoffeeStore() {
           content='My favorite coffee shop in the area'
         />
       </Head>
-      <h1>Five Elephants</h1>
+      <h1>{router.query.id}</h1>
       <p>ID: {router.query.id}</p>
       <p>My favorite place in Berlin</p>
       <Link href='/'>Back to home</Link>
