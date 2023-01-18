@@ -3,6 +3,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import { Banner } from '../components/Banner';
 import { Card } from '../components/Card';
+import { fetchStores } from '../lib/fetchStores';
 // import coffeeStoresData from '../data/coffee-stores.json';
 
 export default function home({ coffeeStores }) {
@@ -55,25 +56,11 @@ export default function home({ coffeeStores }) {
 }
 
 export async function getStaticProps() {
-  // const Lat_Long_Mitte = '52.523690381430995,13.388525240938048'
-  const options = {
-    method: 'GET',
-    headers: {
-      accept: 'application/json',
-      Authorization: process.env.FSQ_KEY,
-    },
-  };
-
-  const response = await fetch(
-    'https://api.foursquare.com/v3/places/search?query=Cafe&ll=52.523690381430995%2C13.388525240938048&radius=3000&limit=12',
-    options
-  ).then((response) => response.json());
-  // catch((err) => console.error(err));
-  console.log('data', response);
+  const coffeeStores = await fetchStores();
 
   return {
     props: {
-      coffeeStores: response.results,
+      coffeeStores,
     },
   };
 }
