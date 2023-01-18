@@ -1,7 +1,9 @@
+import styles from '../../styles/coffee-store.module.css';
 import Head from 'next/head';
 import Link from 'next/link';
-import { stringify } from 'querystring';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
+import cls from 'classnames';
 import coffeeStoresData from '../../data/coffee-stores.json';
 
 export async function getStaticProps({ params }) {
@@ -15,34 +17,90 @@ export async function getStaticProps({ params }) {
 }
 
 export async function getStaticPaths() {
+  const paths = coffeeStoresData.map((store) => {
+    return {
+      params: { id: store.id.toString() },
+    };
+  });
   return {
-    paths: [
-      { params: { id: '0' } },
-      { params: { id: '1' } },
-      { params: { id: '300' } },
-    ],
+    paths,
     fallback: true,
   };
 }
 
-export default function CoffeeStore({ coffeeStore }) {
+export default function CoffeeStore(props) {
   const router = useRouter();
-
   if (router.isFallback) return <div>Loading...</div>;
 
+  const { name, address, neighbourhood, imgUrl } = props.coffeeStore;
+
+  const handleUpvoteButton = () => {
+    console.log('I have been upvoted!');
+  };
+
   return (
-    <>
+    <div className={styles.layout}>
       <Head>
-        <title>{coffeeStore.name}</title>
+        <title>{name}</title>
         <meta
           name='description'
-          content={`${coffeeStore.name} is your favorite coffee shop ${coffeeStore.neighbourhood}`}
+          content={`${name} is your favorite coffee shop ${neighbourhood}`}
         />
       </Head>
-      <h1>{coffeeStore.name}</h1>
-      <p>{coffeeStore.neighbourhood}</p>
-      <br />
-      <Link href='/'>Back to home</Link>
-    </>
+      <div className={styles.container}>
+        <div className={styles.col1}>
+          <Link href='/' className={styles.backToHomeLink}>
+            Back to home
+          </Link>
+          <div className={styles.nameWrapper}>
+            <h1 className={styles.name}>{name}</h1>
+          </div>
+
+          <Image
+            src={imgUrl}
+            alt={`${name} image`}
+            width={600}
+            height={360}
+            className={styles.storeImg}
+          />
+        </div>
+
+        <div className={cls('glass', styles.col2)}>
+          <div className={styles.iconWrapper}>
+            <Image
+              src='/static/places.svg'
+              alt='Icon location'
+              width={24}
+              height={24}
+            />
+            <p className={styles.text}>{address}</p>
+          </div>
+          <div className={styles.iconWrapper}>
+            <Image
+              src='/static/nearMe.svg'
+              alt='Icon location'
+              width={24}
+              height={24}
+              className={styles.icon}
+            />
+            <p className={styles.text}>{neighbourhood}</p>
+          </div>
+
+          <div className={styles.iconWrapper}>
+            <Image
+              src='/static/star.svg'
+              alt='Icon rating'
+              width={24}
+              height={24}
+            />
+            <p className={styles.text}>1</p>
+          </div>
+
+          <button className={styles.upvoteButton} onClick={handleUpvoteButton}>
+            Up vote!
+          </button>
+        </div>
+      </div>
+    </div>
   );
 }
