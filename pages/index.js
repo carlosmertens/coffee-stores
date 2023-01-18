@@ -6,6 +6,16 @@ import { Card } from '../components/Card';
 import { fetchStores } from '../lib/fetchStores';
 // import coffeeStoresData from '../data/coffee-stores.json';
 
+export async function getStaticProps() {
+  const coffeeStores = await fetchStores();
+
+  return {
+    props: {
+      coffeeStores,
+    },
+  };
+}
+
 export default function home({ coffeeStores }) {
   const handleOnClick = () => {
     console.log('I have been clicked!');
@@ -53,14 +63,4 @@ export default function home({ coffeeStores }) {
       </section>
     </>
   );
-}
-
-export async function getStaticProps() {
-  const coffeeStores = await fetchStores();
-
-  return {
-    props: {
-      coffeeStores,
-    },
-  };
 }
