@@ -12,7 +12,7 @@ export async function getStaticProps({ params }) {
   return {
     props: {
       coffeeStore: coffeeStores.find((store) => {
-        return store.fsq_id.toString() === params.id; //dynamic id
+        return store.id.toString() === params.id; //dynamic id
       }),
     },
   };
@@ -22,7 +22,7 @@ export async function getStaticPaths() {
   const coffeeStores = await fetchStores();
   const paths = coffeeStores.map((store) => {
     return {
-      params: { id: store.fsq_id.toString() },
+      params: { id: store.id.toString() },
     };
   });
   return {
@@ -35,7 +35,7 @@ export default function CoffeeStore(props) {
   const router = useRouter();
   if (router.isFallback) return <div>Loading...</div>;
 
-  const { name, location, imgUrl } = props.coffeeStore;
+  const { name, address, postcode, imgUrl } = props.coffeeStore;
 
   const handleUpvoteButton = () => {
     console.log('I have been upvoted!');
@@ -53,7 +53,7 @@ export default function CoffeeStore(props) {
       <div className={styles.container}>
         <div className={styles.col1}>
           <Link href='/' className={styles.backToHomeLink}>
-            Back to home
+            ← Back to home
           </Link>
           <div className={styles.nameWrapper}>
             <h1 className={styles.name}>{name}</h1>
@@ -72,25 +72,34 @@ export default function CoffeeStore(props) {
         </div>
 
         <div className={cls('glass', styles.col2)}>
-          <div className={styles.iconWrapper}>
-            <Image
-              src='/static/places.svg'
-              alt='Icon location'
-              width={24}
-              height={24}
-            />
-            <p className={styles.text}>{location.address}</p>
-          </div>
-          <div className={styles.iconWrapper}>
-            <Image
-              src='/static/nearMe.svg'
-              alt='Icon location'
-              width={24}
-              height={24}
-              className={styles.icon}
-            />
-            <p className={styles.text}>Postcode {location.postcode}</p>
-          </div>
+          {address ? (
+            <div className={styles.iconWrapper}>
+              <Image
+                src='/static/places.svg'
+                alt='Icon address'
+                width={24}
+                height={24}
+              />
+              <p className={styles.text}>{address}</p>
+            </div>
+          ) : (
+            <div></div>
+          )}
+
+          {postcode ? (
+            <div className={styles.iconWrapper}>
+              <Image
+                src='/static/nearMe.svg'
+                alt='Icon postcode'
+                width={24}
+                height={24}
+                className={styles.icon}
+              />
+              <p className={styles.text}>Postcode {postcode}</p>
+            </div>
+          ) : (
+            <div></div>
+          )}
 
           <div className={styles.iconWrapper}>
             <Image

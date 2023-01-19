@@ -42,13 +42,13 @@ export default function home({ coffeeStores }) {
         </div>
         {coffeeStores.length > 0 ? (
           <>
-            <h2 className={styles.heading2}>Berlin Mitte Stores</h2>
+            <h2 className={styles.heading2}>Berlin Cafes</h2>
             <div className={styles.cardLayout}>
               {coffeeStores.map((store) => {
                 return (
                   <Card
-                    key={store.fsq_id}
-                    href={`/coffee-store/${store.fsq_id}`}
+                    key={store.id}
+                    href={`/coffee-store/${store.id}`}
                     name={store.name}
                     imgUrl={
                       store.imgUrl ||
