@@ -6,6 +6,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 [classnames](https://www.npmjs.com/package/classnames)
 [Foursquare](https://foursquare.com/)
 [Unsplash](https://unsplash.com/)
+[Geolocation API](https://developer.mozilla.org/en-US/docs/Web/API/Geolocation_API/Using_the_Geolocation_API)
 
 ## Getting Started
 
