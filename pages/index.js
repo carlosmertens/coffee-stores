@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import styles from '../styles/home.module.css';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -19,6 +19,9 @@ export async function getStaticProps() {
 }
 
 export default function Home({ coffeeStores }) {
+  const [storesNearby, setStoresNearby] = useState('');
+  const [storesNearbyError, setStoresNearbyError] = useState(null);
+
   const { handleTrackLocation, latLong, locationErrorMsg, isFindingLocation } =
     useTrackLocation();
 
@@ -29,11 +32,9 @@ export default function Home({ coffeeStores }) {
       if (latLong) {
         try {
           const data = await fetchStores(latLong);
-          // set data
-          console.log({ data });
+          setStoresNearby(data);
         } catch (error) {
-          // set error
-          console.log(error);
+          setStoresNearbyError(error.message);
         }
       }
     };
@@ -41,7 +42,6 @@ export default function Home({ coffeeStores }) {
   }, [latLong]);
 
   const handleOnClick = () => {
-    console.log('I have been clicked!');
     handleTrackLocation();
   };
 
@@ -59,8 +59,13 @@ export default function Home({ coffeeStores }) {
           buttonText={isFindingLocation ? 'Locating...' : 'View stores nearby'}
           handleOnClick={handleOnClick}
         />
+
         {locationErrorMsg && (
           <div>Something went wrong: {locationErrorMsg}</div>
+        )}
+
+        {storesNearbyError && (
+          <div>Something went wrong: {storesNearbyError}</div>
         )}
 
         <div className={styles.heroImage}>
@@ -71,9 +76,31 @@ export default function Home({ coffeeStores }) {
             height={400}
           />
         </div>
+
+        {storesNearby.length > 0 ? (
+          <div className={styles.sectionWrapper}>
+            <h2 className={styles.heading2}>Cafes nearby</h2>
+            <div className={styles.cardLayout}>
+              {coffeeStores.map((store) => {
+                return (
+                  <Card
+                    key={store.id}
+                    href={`/coffee-store/${store.id}`}
+                    name={store.name}
+                    imgUrl={
+                      store.imgUrl ||
+                      'https://images.unsplash.com/photo-1504753793650-d4a2b783c15e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80'
+                    }
+                  />
+                );
+              })}
+            </div>
+          </div>
+        ) : null}
+
         {coffeeStores.length > 0 ? (
           <div className={styles.sectionWrapper}>
-            <h2 className={styles.heading2}>Berlin Cafes</h2>
+            <h2 className={styles.heading2}>Berlin Mitte</h2>
             <div className={styles.cardLayout}>
               {coffeeStores.map((store) => {
                 return (
