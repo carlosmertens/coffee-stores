@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import styles from '../styles/home.module.css';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -22,6 +23,22 @@ export default function Home({ coffeeStores }) {
     useTrackLocation();
 
   // console.log({ latLong, locationErrorMsg });
+
+  useEffect(() => {
+    const fetchedCoffeeStores = async () => {
+      if (latLong) {
+        try {
+          const data = await fetchStores(latLong);
+          // set data
+          console.log({ data });
+        } catch (error) {
+          // set error
+          console.log(error);
+        }
+      }
+    };
+    fetchedCoffeeStores();
+  }, [latLong]);
 
   const handleOnClick = () => {
     console.log('I have been clicked!');
