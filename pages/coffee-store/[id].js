@@ -9,11 +9,12 @@ import { fetchStores } from '../../lib/fetchStores';
 
 export async function getStaticProps({ params }) {
   const coffeeStores = await fetchStores();
+  const findCoffeeStoreById = coffeeStores.find((store) => {
+    return store.id.toString() === params.id; //dynamic id
+  });
   return {
     props: {
-      coffeeStore: coffeeStores.find((store) => {
-        return store.id.toString() === params.id; //dynamic id
-      }),
+      coffeeStore: findCoffeeStoreById ? findCoffeeStoreById : {},
     },
   };
 }
