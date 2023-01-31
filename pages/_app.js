@@ -9,11 +9,11 @@ const lato = Lato({
   subsets: ['latin'],
 });
 
-const StoreContext = createContext();
+export const StoreContext = createContext();
 
-const ACTION_TYPES = {
+export const ACTION_TYPES = {
   SET_LAT_LONG: 'SET_LAT_LONG',
-  SET_COFFEE_STORES: 'SET_COFFEE_STORES',
+  SET_STORES_NEARBY: 'SET_STORES_NEARBY',
 };
 
 const storeReducer = (state, action) => {
@@ -21,8 +21,8 @@ const storeReducer = (state, action) => {
     case ACTION_TYPES.SET_LAT_LONG: {
       return { ...state, latLong: action.payload.latLong };
     }
-    case ACTION_TYPES.SET_COFFEE_STORES: {
-      return { ...state, coffeeStores: action.payload.coffeeStores };
+    case ACTION_TYPES.SET_STORES_NEARBY: {
+      return { ...state, storesNearby: action.payload.storesNearby };
     }
     default:
       throw new Error(`Unhandled action type: ${action.type}`);
@@ -32,7 +32,7 @@ const storeReducer = (state, action) => {
 const StoreProvider = ({ children }) => {
   const initState = {
     latLong: '',
-    coffeeStores: [],
+    storesNearby: {},
   };
 
   const [state, dispatch] = useReducer(storeReducer, initState);

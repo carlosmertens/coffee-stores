@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import styles from '../styles/home.module.css';
 import Head from 'next/head';
 import Image from 'next/image';
@@ -6,6 +6,7 @@ import { Banner } from '../components/Banner';
 import { Card } from '../components/Card';
 import { fetchStores } from '../lib/fetchStores';
 import { useTrackLocation } from '../hooks/use-track-location';
+import { ACTION_TYPES, StoreContext } from './_app';
 // import coffeeStoresData from '../data/coffee-stores.json';
 
 export async function getStaticProps() {
@@ -19,10 +20,14 @@ export async function getStaticProps() {
 }
 
 export default function Home({ coffeeStores }) {
-  const [storesNearby, setStoresNearby] = useState('');
+  // const [storesNearby, setStoresNearby] = useState('');
   const [storesNearbyError, setStoresNearbyError] = useState(null);
 
-  const { handleTrackLocation, latLong, locationErrorMsg, isFindingLocation } =
+  const { dispatch, state } = useContext(StoreContext);
+
+  const { storesNearby, latLong } = state;
+
+  const { handleTrackLocation, locationErrorMsg, isFindingLocation } =
     useTrackLocation();
 
   // console.log({ latLong, locationErrorMsg });
@@ -32,13 +37,17 @@ export default function Home({ coffeeStores }) {
       if (latLong) {
         try {
           const data = await fetchStores(latLong);
-          setStoresNearby(data);
+          dispatch({
+            type: ACTION_TYPES.SET_STORES_NEARBY,
+            payload: { storesNearby: data },
+          });
         } catch (error) {
           setStoresNearbyError(error.message);
         }
       }
     };
     fetchedCoffeeStores();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [latLong]);
 
   const handleOnClick = () => {
@@ -81,7 +90,7 @@ export default function Home({ coffeeStores }) {
           <div className={styles.sectionWrapper}>
             <h2 className={styles.heading2}>Cafes nearby</h2>
             <div className={styles.cardLayout}>
-              {coffeeStores.map((store) => {
+              {storesNearby.map((store) => {
                 return (
                   <Card
                     key={store.id}

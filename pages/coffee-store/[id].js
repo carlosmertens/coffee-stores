@@ -1,11 +1,13 @@
 import styles from '../../styles/coffee-store.module.css';
+import { useContext, useEffect, useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import cls from 'classnames';
+import { StoreContext } from '../_app';
 import { fetchStores } from '../../lib/fetchStores';
-// import coffeeStoresData from '../../data/coffee-stores.json';
+import { isEmpty } from '../../utils';
 
 export async function getStaticProps({ params }) {
   const coffeeStores = await fetchStores();
@@ -32,11 +34,31 @@ export async function getStaticPaths() {
   };
 }
 
-export default function CoffeeStore(props) {
+export default function CoffeeStore(initProps) {
   const router = useRouter();
+  const id = router.query.id;
+
+  const {
+    state: { storesNearby },
+  } = useContext(StoreContext);
+
+  const [coffeeStore, setCoffeeStore] = useState(initProps.coffeeStore);
+
+  useEffect(() => {
+    if (isEmpty(initProps.coffeeStore)) {
+      if (storesNearby.length > 0) {
+        const findCoffeeStoreById = storesNearby.find((store) => {
+          return store.id.toString() === id;
+        });
+        setCoffeeStore(findCoffeeStoreById);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
+
   if (router.isFallback) return <div>Loading...</div>;
 
-  const { name, address, postcode, imgUrl } = props.coffeeStore;
+  const { name, address, postcode, imgUrl } = coffeeStore;
 
   const handleUpvoteButton = () => {
     console.log('I have been upvoted!');
